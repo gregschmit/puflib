@@ -10,13 +10,7 @@ def generate_random_challenges(n=100, b=8):
 class Gate:
     """
     This represents a gate used for delay-based PUFs. The gate is instantiated
-    with a P/RNG that should represent the PDF that models the delay.
-
-    Attributes:
-        sample_rng(function): A function that is called when the gate delay is
-            sampled. For example, to make a gate always give a delay of 2,
-            pass `lambda: 2`. If you want the gate to return a Gaussian
-            distribution with a mean of 2, pass `lambda: np.random.normal(2)`.
+    with an RNG that should represent the PDF that models the delay.
 
     TODO: Add drift mechanism
     """

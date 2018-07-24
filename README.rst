@@ -3,6 +3,15 @@ PUFlib
 
 A Python library for emulating Physically Unclonable Functions (PUFs).
 
+Contributing
+############
+
+Email gschmi4@uic.edu if you want to contribute. You must only contribute code
+that you have authored or otherwise hold the copyright to, and you must
+make any contributions to this project available under the MIT license.
+
+To collaborators: don't push using the `--force` option.
+
 Dev Quickstart
 ##############
 
