@@ -79,7 +79,7 @@ class Architecture:
     Generic inheritable class for delay-based PUF architectures.
     """
 
-    def __init__(self, stages=8, sensitivity=0.0, production_rng=lambda: np.random.normal(10, 0.1), sample_rng=lambda: 0):
+    def __init__(self, stages=8, sensitivity=0.0, production_rng=None, sample_rng=None):
         if not isinstance(stages, list):
             self.stages = []
             for i in range(stages):
@@ -94,17 +94,25 @@ class Architecture:
             r.append(self.run(ch))
         return r
 
-    def quicktest(self, challenge='10101010', times=100):
+    def quicktest(self, challenge=None, times=100):
         """
         Perform a quick reliability test and return a tuple consisting of the
-        winning value and the frequency, respectively.
+        challenge, winning value, and the frequency, respectively.
         """
+        if not challenge:
+            challenge = ''.join([str(x) for x in np.random.choice([0,1], len(self.stages))])
+        if len(challenge) != len(self.stages):
+            raise ValueError("challenge must have same number of bits as the PUF has stages")
         results = {'0': 0, '1': 0}
         for i in range(times):
             results[self.run(challenge)] += 1
+        if not results['1']:
+            return (challenge, '1', 1.0)
         if results['0'] > results['1']:
-            return ('0', results['0']/results['1'])
-        return ('1', results['1']/results['0'])
+            return (challenge, '0', results['0']/times)
+        if not results['0']:
+            return (challenge, '0', 1.0)
+        return (challenge, '1', results['1']/times)
 
 
 class Loop(Architecture):
@@ -114,8 +122,8 @@ class Loop(Architecture):
     is within the `sensitivity` range, then the winner will be random.
     """
 
-    def __init__(self, stages=8, sensitivity=0.01):
-        super().__init__(stages, sensitivity)
+    def __init__(self, stages=8, sensitivity=0.01, production_rng=lambda: np.random.normal(10), sample_rng=lambda: 0):
+        super().__init__(stages, sensitivity, production_rng, sample_rng)
 
     def run(self, challenge):
         """
@@ -167,8 +175,8 @@ class Arbiter(Architecture):
     if the up/top is slower, a 1 is returned, else 0.
     """
 
-    def __init__(self, stages=8, sensitivity=0.01):
-        super().__init__(stages, sensitivity)
+    def __init__(self, stages=8, sensitivity=0.01, production_rng=lambda: np.random.normal(10), sample_rng=lambda: 0):
+        super().__init__(stages, sensitivity, production_rng, sample_rng)
 
     def run(self, challenge):
         """
