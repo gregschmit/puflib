@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='puflib',
-    version='0.1',
+    version='dev',
     description='Library for Emulating Physically Unclonable Functions',
     author='Gregory N. Schmit',
     author_email='schmitgreg@gmail.com',
