@@ -26,22 +26,17 @@ class Gate:
         self.times_sampled += 1
         return self.delay + self.sample_rng()
 
+
 class Mux:
     """
     This just represents two `Gate` objects, up and down.
     """
 
-    def __init__(self, gate_up=None, gate_down=None, delay=10, sample_rng=None):
+    def __init__(self, gate_up=None, gate_down=None, d1=10, d2=10, sample_rng=None):
         if not gate_up:
-            if sample_rng:
-                gate_up = Gate(delay, sample_rng)
-            else:
-                gate_up = Gate(delay)
+            gate_up = Gate(d1, sample_rng)
         if not gate_down:
-            if delay_rng:
-                gate_down = Gate(delay, sample_rng)
-            else:
-                gate_down = Gate(delay)
+            gate_down = Gate(d2, sample_rng)
         self.gates = [gate_up, gate_down]
 
     @property
@@ -59,11 +54,11 @@ class Stage:
         if not mux_up:
             r1a = production_rng()
             r1b = production_rng()
-            mux_up = Mux(Gate(r1a, sample_rng), Gate(r1b, sample_rng))
+            mux_up = Mux(d1=r1a, d2=r1b, sample_rng=sample_rng)
         if not mux_down:
             r2a = production_rng()
             r2b = production_rng()
-            mux_down = Mux(Gate(r2a, sample_rng), Gate(r2b, sample_rng))
+            mux_down = Mux(d1=r2a, d2=r2b, sample_rng=sample_rng)
         self.muxes = [mux_up, mux_down]
 
     @property
@@ -220,4 +215,4 @@ class Arbiter(Architecture):
         else:
             d2 += self.sensitivity
 
-        return '1' if d1 - d2 > 0 else '0'
+        return '1' if d1 - d2 > 0 else '0' # add flip case!!!!!
