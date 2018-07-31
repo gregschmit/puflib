@@ -135,12 +135,8 @@ class Loop(Architecture):
         complement; 0 otherwise.
         """
 
-        if not len(challenge) == len(self.stages):
-            return
-
-        for c in challenge:
-            if not (c == '0' or c == '1'):
-                return
+        # reverse challenge for R-to-L read
+        challenge = challenge[::-1]
 
         d1 = 0.0
         d2 = 0.0
@@ -188,12 +184,8 @@ class Arbiter(Architecture):
         complement; 0 otherwise.
         """
 
-        if not len(challenge) == len(self.stages):
-            return
-
-        for c in challenge:
-            if not (c == '0' or c == '1'):
-                return
+        # reverse challenge for R-to-L read
+        challenge = challenge[::-1]
 
         d1 = 0.0
         d2 = 0.0
