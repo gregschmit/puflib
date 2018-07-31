@@ -15,12 +15,17 @@ class Gate:
     TODO: Add drift mechanism
     """
 
-    def __init__(self, delay=10, sample_rng=None):
+    def __init__(self, delay=None, production_rng=None, sample_rng=None):
+        if not delay:
+            if not production_rng:
+                delay = np.random.normal(10)
+            else:
+                delay = production_rng()
         if not sample_rng:
             sample_rng = lambda: 0
+        self.delay = delay
         self.sample_rng = sample_rng
         self.times_sampled = 0
-        self.delay = delay
 
     def sample(self):
         self.times_sampled += 1
@@ -32,11 +37,11 @@ class Mux:
     This just represents two `Gate` objects, up and down.
     """
 
-    def __init__(self, gate_up=None, gate_down=None, d1=10, d2=10, sample_rng=None):
+    def __init__(self, gate_up=None, gate_down=None, production_rng=None, sample_rng=None):
         if not gate_up:
-            gate_up = Gate(d1, sample_rng)
+            gate_up = Gate(production_rng=production_rng, sample_rng=sample_rng)
         if not gate_down:
-            gate_down = Gate(d2, sample_rng)
+            gate_down = Gate(production_rng=production_rng, sample_rng=sample_rng)
         self.gates = [gate_up, gate_down]
 
     @property
@@ -50,15 +55,11 @@ class Mux:
 
 class Stage:
 
-    def __init__(self, mux_up=None, mux_down=None, production_rng=np.random.normal(10), sample_rng=lambda: 0):
+    def __init__(self, mux_up=None, mux_down=None, production_rng=None, sample_rng=None):
         if not mux_up:
-            r1a = production_rng()
-            r1b = production_rng()
-            mux_up = Mux(d1=r1a, d2=r1b, sample_rng=sample_rng)
+            mux_up = Mux(production_rng=production_rng, sample_rng=sample_rng)
         if not mux_down:
-            r2a = production_rng()
-            r2b = production_rng()
-            mux_down = Mux(d1=r2a, d2=r2b, sample_rng=sample_rng)
+            mux_down = Mux(production_rng=production_rng, sample_rng=sample_rng)
         self.muxes = [mux_up, mux_down]
 
     @property
@@ -68,6 +69,7 @@ class Stage:
     @property
     def down(self):
         return self.muxes[1]
+
 
 class Architecture:
     """
@@ -82,6 +84,8 @@ class Architecture:
         else:
             self.stages = stages
         self.sensitivity = sensitivity
+        self.last_d1 = None
+        self.last_d2 = None
 
     def run_set(self, challenges=[]):
         r = []
