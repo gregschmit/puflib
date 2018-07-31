@@ -109,6 +109,14 @@ class Architecture:
             return (challenge, '0', 1.0)
         return (challenge, '1', results['1']/times)
 
+    def get_bitstring(self, x):
+        """
+        Return a bitstring representation of the passed integer, most
+        significant bits truncated or padded with zeros to match the number of
+        staged in the architecture.
+        """
+        return ('{:0' + str(len(self.stages)) + 'b}').format(x)[-len(self.stages):]
+
 
 class Loop(Architecture):
     """
