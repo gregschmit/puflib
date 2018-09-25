@@ -145,23 +145,14 @@ class Loop(Architecture):
         d1 = 0.0
         d2 = 0.0
 
-        challenge_comp = ''.join(list(map(
-            lambda x: '1' if x == '0' else '0', challenge
-        )))
-
-        # iterate once for challenge
+        # run the puf
         for i, s in enumerate(self.stages):
             if challenge[i] == '0':
                 d1 += s.up.up.sample() + s.down.down.sample()
+                d2 += s.up.down.sample() + s.down.up.sample()
             else:
                 d1 += s.up.down.sample() + s.down.up.sample()
-
-        # iterate once more for challenge complement
-        for i, s in enumerate(self.stages):
-            if challenge_comp[i] == '0':
                 d2 += s.up.up.sample() + s.down.down.sample()
-            else:
-                d2 += s.up.down.sample() + s.down.up.sample()
 
         # add sensitivity randomly
         if np.random.choice([True, False]):
@@ -195,6 +186,7 @@ class Arbiter(Architecture):
         d2 = 0.0
         flip = False
 
+        # run the puf
         for i in range(len(self.stages)):
             s = self.stages[i]
             if challenge[i] == '0':
@@ -219,4 +211,8 @@ class Arbiter(Architecture):
         else:
             d2 += self.sensitivity
 
-        return '1' if d1 - d2 > 0 else '0' # add flip case!!!!!
+        # account for if the final delay paths are flipped
+        if not flip:
+            return '1' if d1 - d2 > 0 else '0'
+        else:
+            return '1' if d2 - d1 > 0 else '0'
