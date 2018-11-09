@@ -133,9 +133,16 @@ class Architecture:
         """
         Return a bitstring representation of the passed integer, most
         significant bits truncated or padded with zeros to match the number of
-        staged in the architecture.
+        stages in the architecture.
         """
         return ('{:0' + str(len(self.stages)) + 'b}').format(x)[-len(self.stages):]
+
+    def generate_random_crps(self, n=100):
+        c_set = generate_random_challenges(n, len(self.stages))
+        r = []
+        for c in c_set:
+            r.append((c, self.run(c)))
+        return r
 
 
 class Loop(Architecture):
