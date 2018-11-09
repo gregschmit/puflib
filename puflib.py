@@ -3,7 +3,7 @@
 import numpy as np
 
 
-def tri_value(challenge):
+def tri(challenge):
     t = 0
     state = 0
     for x in reversed(challenge):
@@ -15,8 +15,8 @@ def tri_value(challenge):
     return t
 
 
-def beta_value(challenge):
-    return tri_value(challenge)//2
+def beta(challenge):
+    return tri(challenge)//2
 
 
 def generate_random_challenges(n=100, b=8):
