@@ -175,8 +175,8 @@ class Arbiter(Architecture):
     def run(self, challenge):
         """
         Run the architecture with the given challenge. Challenge should be a
-        bitstring; returns 1 if the challenge delay was higher than its
-        complement; 0 otherwise.
+        bitstring; returns 1 if the challenge delay on the top is slower, else
+        0.
         """
 
         # reverse challenge for R-to-L read
@@ -211,8 +211,4 @@ class Arbiter(Architecture):
         else:
             d2 += self.sensitivity
 
-        # account for if the final delay paths are flipped
-        if not flip:
-            return '1' if d1 - d2 > 0 else '0'
-        else:
-            return '1' if d2 - d1 > 0 else '0'
+        return '1' if d1 - d2 > 0 else '0'
