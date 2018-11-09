@@ -3,6 +3,22 @@
 import numpy as np
 
 
+def tri_value(challenge):
+    t = 0
+    state = 0
+    for x in reversed(challenge):
+        if x == '0':
+            t += state*2
+        else:
+            t += 1
+            state = int(not state)
+    return t
+
+
+def beta_value(challenge):
+    return tri_value(challenge)//2
+
+
 def generate_random_challenges(n=100, b=8):
     return [''.join([np.random.choice(['0', '1']) for x in range(b)]) for y in range(n)]
 
