@@ -1,7 +1,10 @@
 """This module is a library for emulating physically unclonable functions."""
 
 import numpy as np
-from .version import *
+from .version import get_version
+
+
+__version__ = get_version()
 
 
 def xor(c1, c2):
