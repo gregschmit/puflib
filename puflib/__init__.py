@@ -1,9 +1,20 @@
 """This module is a library for emulating physically unclonable functions."""
 
 import numpy as np
+from .version import *
 
 
-def tri(challenge):
+def xor(c1, c2):
+    r = ''
+    for x, y in zip(c1, c2):
+        if x == y:
+            r.append('0')
+        else:
+            r.append('1')
+    return r
+
+def tri(c1, c2):
+    ch
     t = 0
     state = 0
     for x in reversed(challenge):
@@ -17,6 +28,10 @@ def tri(challenge):
 
 def beta(challenge):
     return tri(challenge)//2
+
+
+def hamming(c1, c2):
+    return sum([int(x1 != x2) for x1, x2 in zip(c1, c2)])
 
 
 def generate_random_challenges(n=100, b=8):
