@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from distutils.core import setup
+import os
 from puflib import version
 
 # allow setup.py to be run from any path
