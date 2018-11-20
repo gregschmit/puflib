@@ -28,8 +28,9 @@ def get_version():
 
 
 def stamp_directory(d):
+    v = get_version()
     with open(os.path.join(d, 'VERSION_STAMP'), 'wb') as f:
-        f.write(get_version().encode() + b'\n')
+        f.write(v.encode() + b'\n')
 
 
 def unstamp_directory(d):
