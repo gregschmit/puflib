@@ -11,16 +11,17 @@ def xor(c1, c2):
     r = ''
     for x, y in zip(c1, c2):
         if x == y:
-            r.append('0')
+            r += '0'
         else:
-            r.append('1')
+            r += '1'
     return r
 
+
 def tri(c1, c2):
-    ch
+    ch = xor(c1, c2)
     t = 0
     state = 0
-    for x in reversed(challenge):
+    for x in reversed(ch):
         if x == '0':
             t += state*2
         else:
@@ -29,8 +30,12 @@ def tri(c1, c2):
     return t
 
 
-def beta(challenge):
-    return tri(challenge)//2
+def gamma(c1, c2):
+    return len(c1) - tri(c1, c2)
+
+
+def beta(c1, c2):
+    return tri(c1, c2)//2
 
 
 def hamming(c1, c2):
