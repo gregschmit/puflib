@@ -42,7 +42,7 @@ def hamming(c1, c2):
     return sum([int(x1 != x2) for x1, x2 in zip(c1, c2)])
 
 
-def generate_random_challenges(n=100, b=8):
+def generate_random_challenges(n=100, b=8, unique=False):
     return [''.join([np.random.choice(['0', '1']) for x in range(b)]) for y in range(n)]
 
 
