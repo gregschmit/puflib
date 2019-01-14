@@ -42,8 +42,16 @@ def hamming(c1, c2):
     return sum([int(x1 != x2) for x1, x2 in zip(c1, c2)])
 
 
-def generate_random_challenges(n=100, b=8, unique=False):
-    return [''.join([np.random.choice(['0', '1']) for x in range(b)]) for y in range(n)]
+def generate_random_challenges(n=100, b=8, unique=True):
+    if unique:
+        s = []
+        while len(s) < n:
+            r = [np.random.choice([0, 1]) for x in range(b)]
+            if r not in s or len(s) >= 2**b:
+                s.append(r)
+        return [''.join([str(y) for y in x]) for x in s]
+    else:
+        return [''.join([np.random.choice(['0', '1']) for x in range(b)]) for y in range(n)]
 
 
 class Gate:
