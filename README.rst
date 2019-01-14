@@ -17,12 +17,12 @@ Dev Quickstart
 
 First clone, the repository into a location of your choosing:
 
-.. code-block:
+.. code-block:: shell
 
     $ git clone https://github.com/gregschmit/puflib
 
 Then install/register the library with `pip` in editable mode:
 
-.. code-block:
+.. code-block:: shell
 
     $ sudo pip install -e puflib/
