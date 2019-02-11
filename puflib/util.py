@@ -1,6 +1,5 @@
 """This module contains generic utilities."""
 
-
 import numpy as np
 
 

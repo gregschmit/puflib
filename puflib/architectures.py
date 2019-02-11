@@ -1,7 +1,6 @@
 """This module is the core of the library, containing the definitions of the
 low-level components and architectures."""
 
-
 import numpy as np
 from .util import *
 
@@ -232,10 +231,13 @@ class CompositeArchitecture(Architecture):
     constructor of the child PUFs.
     """
 
-    def __init__(self, puf=Arbiter, k=4, *args, **kwargs):
-        if k<=1:
+    def __init__(self, puf=Arbiter, k=4, pufs=[], *args, **kwargs):
+        if not pufs and k<=1:
             raise ValueError("CompositeArchitecture must have at least 2 child PUFs")
-        self.pufs = [puf(*args, **kwargs) for x in range(k)]
+        if pufs:
+            self.pufs = pufs
+        else:
+            self.pufs = [puf(*args, **kwargs) for x in range(k)]
 
 class Xor(CompositeArchitecture):
     """
