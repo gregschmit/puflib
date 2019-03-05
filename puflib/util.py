@@ -3,20 +3,10 @@
 import numpy as np
 
 
-def xor(c1, c2):
-    r = ''
-    for x, y in zip(c1, c2):
-        if x == y:
-            r += '0'
-        else:
-            r += '1'
-    return r
-
-
 def xor_list(c):
     r = c[0]
     for x in c[1:]:
-        r = xor(r, x)
+        r = r ^ x
     return r
 
 

@@ -102,16 +102,16 @@ class Architecture:
             challenge = ''.join([str(x) for x in np.random.choice([0,1], len(self.stages))])
         if len(challenge) != len(self.stages):
             raise ValueError("challenge must have same number of bits as the PUF has stages")
-        results = {'0': 0, '1': 0}
+        results = {0: 0, 1: 0}
         for i in range(times):
             results[self.run(challenge)] += 1
-        if not results['1']:
+        if not results[1]:
             return (challenge, '1', 1.0)
-        if results['0'] > results['1']:
-            return (challenge, '0', results['0']/times)
-        if not results['0']:
+        if results[0] > results[1]:
+            return (challenge, '0', results[0]/times)
+        if not results[0]:
             return (challenge, '0', 1.0)
-        return (challenge, '1', results['1']/times)
+        return (challenge, '1', results[1]/times)
 
     def get_bitstring(self, x):
         """
@@ -167,7 +167,7 @@ class Loop(Architecture):
         else:
             d2 += self.sensitivity
 
-        return '1' if d1 - d2 > 0 else '0'
+        return 1 if d1 - d2 > 0 else 0
 
 
 class Arbiter(Architecture):
@@ -218,7 +218,7 @@ class Arbiter(Architecture):
         else:
             d2 += self.sensitivity
 
-        return '1' if d1 - d2 > 0 else '0'
+        return 1 if d1 - d2 > 0 else 0
 
 
 class CompositeArchitecture(Architecture):
