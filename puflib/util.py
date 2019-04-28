@@ -45,3 +45,73 @@ def generate_random_challenges(n=100, b=8, unique=True):
         return [''.join([str(y) for y in x]) for x in s]
     else:
         return [''.join([np.random.choice(['0', '1']) for x in range(b)]) for y in range(n)]
+
+
+def enum_tri(n, t, start_high=None):
+    """
+    Recursive enumeration of the values that are in the tri-range of 0.
+    """
+    # resolve start-high for initial conditions:
+    if start_high is None:
+        if t % 2: # odd
+            start_high = True
+        else:
+            start_high = False
+
+    # trivial case (complexity pruning)
+    if not t and not start_high: return [[0]*n]
+
+    # sanity
+    if t > 2*n - 1: return False
+    if t < 0: return False
+
+    # base case
+    if n == 1:
+        if t == 1:
+            if start_high:
+                return [[1]] # \
+            return False # cannot end high on last bit
+        elif t == 0:
+            if not start_high:
+                return [[0]] # _
+            return False # cannot end high on last bit
+        else:
+            return False # this should never happen
+
+    # recursive case
+    if start_high:
+        # case 1: stay straight
+        c1 = enum_tri(n-1, t-2, True)
+        # case 2: change (go down)
+        c2 = enum_tri(n-1, t-1, False)
+    else:
+        # case 1: stay straight
+        c1 = enum_tri(n-1, t, False)
+        # case 2: change (go up)
+        c2 = enum_tri(n-1, t-1, True)
+    
+    # assemble from our partials
+    f1 = []
+    f2 = []
+    if c1:
+        f1 = [[0] + x for x in c1 if x]
+    if c2:
+        f2 = [[1] + x for x in c2 if x]
+
+    return f1 + f2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
