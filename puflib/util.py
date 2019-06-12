@@ -4,14 +4,16 @@ import numpy as np
 
 
 def xor_list(c):
-    r = c[0]
+    bit_length = len(c[0])
+    r = int(c[0], 2)
     for x in c[1:]:
-        r = r ^ x
-    return r
+        r = r ^ int(x, 2)
+    bit_format = f'{{0:0{str(bit_length)}b}}'
+    return bit_format.format(r)
 
 
 def tri(c1, c2):
-    ch = xor(c1, c2)
+    ch = xor_list([c1, c2])
     t = 0
     state = 0
     for x in reversed(ch):
@@ -89,7 +91,7 @@ def enum_tri(n, t, start_high=None):
         c1 = enum_tri(n-1, t, False)
         # case 2: change (go up)
         c2 = enum_tri(n-1, t-1, True)
-    
+
     # assemble from our partials
     f1 = []
     f2 = []
@@ -101,17 +103,16 @@ def enum_tri(n, t, start_high=None):
     return f1 + f2
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+def srf_interpret(v):
+    """
+    0110 -> SRRS
+    """
+    same = True
+    result = []
+    for x in reversed(v):
+        if x:
+            result.append('R')
+            same = not same
+        if not x:
+            result.append('S') if same else result.append('F')
+    return list(reversed(result))

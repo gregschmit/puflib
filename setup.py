@@ -12,7 +12,7 @@ version.stamp_directory(os.path.join(os.getcwd(), 'puflib'))
 setup(
     name='puflib',
     version=version.get_version(),
-    description='Library for Emulating Physically Unclonable Functions',
+    description='Library for emulating Physically Unclonable Functions.',
     author='Gregory N. Schmit',
     author_email='schmitgreg@gmail.com',
     url='https://github.com/gregschmit/puflib',
