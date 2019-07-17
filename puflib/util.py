@@ -107,12 +107,12 @@ def srf_interpret(v):
     """
     0110 -> SRRS
     """
-    same = True
+    state = 1
     result = []
     for x in reversed(v):
         if x:
             result.append('R')
-            same = not same
+            state = not state
         if not x:
-            result.append('S') if same else result.append('F')
+            result.append('S') if state else result.append('F')
     return list(reversed(result))
